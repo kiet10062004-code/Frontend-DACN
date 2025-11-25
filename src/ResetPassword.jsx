@@ -19,7 +19,7 @@ export default function ResetPassword({ email, otp}) {
     if (!email) return setError("Email không được để trống");
     if (!otp) return setError("OTP không được để trống");
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/reset-password/", {
+      const res = await axios.post("https://backend-dacn-h8nw1.onrender.com/api/reset-password/", {
         email,
         otp,
         new_password: newPassword

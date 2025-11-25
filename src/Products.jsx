@@ -10,7 +10,7 @@ function Products() {
   const [loading, setLoading] = useState(true);
     
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/Category/')
+    axios.get('https://backend-dacn-h8nw1.onrender.com/api/Category/')
       .then(res => {
         setCategories(res.data);
         const lenCategory = res.data.find(c => c.name.toLowerCase() === 'len');
@@ -25,7 +25,7 @@ function Products() {
   useEffect(() => {
     if (selectedCategory === null) return;
     setLoading(true);
-    const url = `http://127.0.0.1:8000/api/Product/?category=${selectedCategory}&include_children=true`;
+    const url = `https://backend-dacn-h8nw1.onrender.com/api/Product/?category=${selectedCategory}&include_children=true`;
     axios.get(url)
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : res.data.results || [];

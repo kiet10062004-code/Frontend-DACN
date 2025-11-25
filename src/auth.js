@@ -9,7 +9,7 @@ export async function ensureAccessToken() {
   if (token) return token;
 
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/token/refresh/", {
+    const res = await axios.post("https://backend-dacn-h8nw1.onrender.com/api/token/refresh/", {
       refresh: refreshToken,
     });
 

@@ -9,11 +9,11 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/Category/")
+    axios.get("https://backend-dacn-h8nw1.onrender.com/api/Category/")
       .then(res => setCategories(res.data))
       .catch(err => console.error(err));
 
-    axios.get("http://127.0.0.1:8000/api/Product/?include_children=true")
+    axios.get("https://backend-dacn-h8nw1.onrender.com/api/Product/?include_children=true")
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : res.data.results || [];
         setProducts(data);

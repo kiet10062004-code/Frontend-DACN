@@ -9,14 +9,14 @@ export default function ProductDetail() {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/Product/${id}/`)
+    axios.get(`https://backend-dacn-h8nw1.onrender.com/api/Product/${id}/`)
       .then(res => setProduct(res.data))
       .catch(err => console.error("Lỗi khi lấy sản phẩm", err));
   }, [id]);
 
   useEffect(() => {
     if (!product) return;
-    axios.get(`http://127.0.0.1:8000/api/Product/?category=${product.category.id}`)
+    axios.get(`https://backend-dacn-h8nw1.onrender.com/api/Product/?category=${product.category.id}`)
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : res.data.results || [];
         const related = data.filter(p => p.id !== product.id);

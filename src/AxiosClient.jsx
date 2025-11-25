@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: "https://backend-dacn-h8nw1.onrender.com",
 });
 
 axiosClient.interceptors.request.use((config) => {
@@ -27,7 +27,7 @@ axiosClient.interceptors.response.use(
       }
 
       try {
-        const res = await axios.post("http://127.0.0.1:8000/api/token/refresh/", {
+        const res = await axios.post("https://backend-dacn-h8nw1.onrender.com/api/token/refresh/", {
           refresh: refreshToken,
         });
 

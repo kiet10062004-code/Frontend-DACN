@@ -71,7 +71,7 @@ function Dangnhap({ setIsLoggedIn}) {
         username: form.username,
         password: form.password
       };
-      const res = await axios.post('http://127.0.0.1:8000/api/token/', payload);
+      const res = await axios.post('https://backend-dacn-h8nw1.onrender.com/api/token/', payload);
 
       const access = res.data.access;
       const refresh = res.data.refresh;
@@ -79,7 +79,7 @@ function Dangnhap({ setIsLoggedIn}) {
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);
 
-      const userRes = await axios.get('http://127.0.0.1:8000/api/user/', {
+      const userRes = await axios.get('https://backend-dacn-h8nw1.onrender.com/api/user/', {
         headers: { Authorization: `Bearer ${access}` }
       });
 
@@ -87,7 +87,7 @@ function Dangnhap({ setIsLoggedIn}) {
       setIsLoggedIn(true);
 
       if (user.is_superuser) {
-        window.location.href = 'http://127.0.0.1:8000/dashboard/';
+        window.location.href = 'https://backend-dacn-h8nw1.onrender.com/dashboard/';
       } else {
         navigate('/'); 
       }

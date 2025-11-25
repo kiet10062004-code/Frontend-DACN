@@ -40,7 +40,7 @@ export default function ForgotPassword({ goToReset }) {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://127.0.0.1:8000/api/request-password-reset/",
+        "https://backend-dacn-h8nw1.onrender.com/api/request-password-reset/",
         { email }
       );
       setMessage(res.data.message);
@@ -60,7 +60,7 @@ export default function ForgotPassword({ goToReset }) {
     setError("");
     setMessage("");
     try {
-      await axios.post("http://127.0.0.1:8000/api/verify-otp/", {
+      await axios.post("https://backend-dacn-h8nw1.onrender.com/api/verify-otp/", {
         email,
         otp,
       });
