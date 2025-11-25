@@ -27,7 +27,7 @@ function Home() {
     <div className="home-container">
 
       <section className="banner">
-      <img src="http://localhost:8000/media/products/image 37.png" alt="Banner" />
+      <img src="https://backend-dacn-h8nw1.onrender.com/media/products/image 37.png" alt="Banner" />
 
         <div className="banner-text">
           <h1>Chào mừng đến với MoreLen</h1>
