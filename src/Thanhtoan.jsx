@@ -45,7 +45,7 @@ function Thanhtoan() {
 
       try {
         orderRes = await axios.post(
-          "https://backend-dacn-h8nw1.onrender.com/api/Order/",
+          "https://backend-dacn-hmw1.onrender.com/api/Order/",
           {
             customer_name: formData.name,
             customer_address: formData.address,
@@ -69,13 +69,13 @@ function Thanhtoan() {
         if (err.response?.status === 401) {
           try {
             const refreshRes = await axios.post(
-              "https://backend-dacn-h8nw1.onrender.com/api/token/refresh/",
+              "https://backend-dacn-hmw1.onrender.com/api/token/refresh/",
               { refresh: localStorage.getItem("refresh_token") }
             );
             localStorage.setItem("access_token", refreshRes.data.access);
 
             orderRes = await axios.post(
-              "https://backend-dacn-h8nw1.onrender.com/api/Order/",
+              "https://backend-dacn-hmw1.onrender.com/api/Order/",
               {
                 customer_name: formData.name,
                 customer_address: formData.address,
@@ -112,7 +112,7 @@ function Thanhtoan() {
       const orderId = order.id;
 
       const momoRes = await axios.post(
-        `https://backend-dacn-h8nw1.onrender.com/momo/create/${orderId}/`,
+        `https://backend-dacn-hmw1.onrender.com/momo/create/${orderId}/`,
         { type: paymentMethod },
         {
           headers: {

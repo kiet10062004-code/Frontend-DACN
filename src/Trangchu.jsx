@@ -9,11 +9,11 @@ function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("https://backend-dacn-h8nw1.onrender.com/api/Category/")
+    axios.get("https://backend-dacn-hmw1.onrender.com/api/Category/")
       .then(res => setCategories(res.data))
       .catch(err => console.error(err));
 
-    axios.get("https://backend-dacn-h8nw1.onrender.com/api/Product/?include_children=true")
+    axios.get("https://backend-dacn-hmw1.onrender.com/api/Product/?include_children=true")
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : res.data.results || [];
         setProducts(data);
@@ -27,7 +27,7 @@ function Home() {
     <div className="home-container">
 
       <section className="banner">
-      <img src="https://backend-dacn-h8nw1.onrender.com/media/products/image 37.png" alt="Banner" />
+      <img src="https://backend-dacn-hmw1.onrender.com/media/products/image 37.png" alt="Banner" />
 
         <div className="banner-text">
           <h1>Chào mừng đến với MoreLen</h1>

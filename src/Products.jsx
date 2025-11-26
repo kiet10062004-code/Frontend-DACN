@@ -8,9 +8,10 @@ function Products() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeParent, setActiveParent] = useState(null);
   const [loading, setLoading] = useState(true);
-    
+
+  // Lấy danh mục
   useEffect(() => {
-    axios.get('https://backend-dacn-h8nw1.onrender.com/api/Category/')
+    axios.get('https://backend-dacn-hmw1.onrender.com/api/Category/')
       .then(res => {
         setCategories(res.data);
         const lenCategory = res.data.find(c => c.name.toLowerCase() === 'len');
@@ -22,11 +23,17 @@ function Products() {
       .catch(err => console.error('Lỗi khi lấy danh mục', err));
   }, []);
 
+  // Lấy sản phẩm
   useEffect(() => {
-    if (selectedCategory === null) return;
+    if (!selectedCategory) return; // nếu chưa chọn category, bỏ qua
     setLoading(true);
-    const url = `https://backend-dacn-h8nw1.onrender.com/api/Product/?category=${selectedCategory}&include_children=true`;
-    axios.get(url)
+
+    const url = 'https://backend-dacn-hmw1.onrender.com/api/Product/';
+    const params = { include_children: true };
+
+    if (selectedCategory) params.category = selectedCategory;
+
+    axios.get(url, { params })
       .then(res => {
         const data = Array.isArray(res.data) ? res.data : res.data.results || [];
         setProducts(data);
@@ -37,9 +44,7 @@ function Products() {
 
   const parentCategories = categories.filter(c => c.parent === null || c.parent === undefined);
   const childCategories = categories.filter(c => {
-    if (typeof c.parent === 'object') {
-      return c.parent?.id === activeParent;
-    }
+    if (typeof c.parent === 'object') return c.parent?.id === activeParent;
     return c.parent === activeParent;
   });
 
@@ -53,23 +58,15 @@ function Products() {
       return;
     }
 
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
+    if (existing) existing.quantity += 1;
+    else cart.push({ ...product, quantity: 1 });
+
     localStorage.setItem('cart', JSON.stringify(cart));
     alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
   };
 
   const ProductSkeleton = () => (
-    <li style={{
-      border: '1px solid #eee',
-      padding: '12px',
-      borderRadius: '8px',
-      background: '#fff',
-      animation: 'pulse 1.5s infinite ease-in-out'
-    }}>
+    <li style={{ border: '1px solid #eee', padding: '12px', borderRadius: '8px', background: '#fff', animation: 'pulse 1.5s infinite ease-in-out' }}>
       <div style={{ background: '#e5e7eb', height: '160px', borderRadius: '6px', marginBottom: '10px' }} />
       <div style={{ background: '#e5e7eb', height: '16px', width: '80%', borderRadius: '4px', marginBottom: '8px' }} />
       <div style={{ background: '#e5e7eb', height: '16px', width: '60%', borderRadius: '4px' }} />
@@ -79,16 +76,13 @@ function Products() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <aside style={{ width: '220px', padding: '5px', borderRight: '1px solid #ddd' }}>
-        <div style={{position:'fixed'}}>
-          <h3 style={{background: '#DEC6C6', height:'30px',alignItems:"center",alignContent: "center", display: "flex", justifyContent:"center"}}>Danh mục sản phẩm</h3>
+        <div style={{ position:'fixed' }}>
+          <h3 style={{ background: '#DEC6C6', height:'30px', display: 'flex', justifyContent:'center', alignItems:'center' }}>Danh mục sản phẩm</h3>
           <ul style={{ listStyle: 'none', padding: 0 }}>
             {parentCategories.map(category => (
               <li key={category.id}>
                 <button
-                  onClick={() => {
-                    setActiveParent(category.id);
-                    setSelectedCategory(category.id);
-                  }}
+                  onClick={() => { setActiveParent(category.id); setSelectedCategory(category.id); }}
                   style={{
                     background: activeParent === category.id ? '#e6f0ff' : 'transparent',
                     border: 'none',
@@ -132,74 +126,19 @@ function Products() {
           </div>
         )}
 
-        <ul style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)', 
-          gap: '24px',
-          listStyle: 'none',
-          padding: 0
-        }}>
+        <ul style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', listStyle: 'none', padding: 0 }}>
           {loading ? (
             Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)
           ) : products.length === 0 ? (
             <p>Không có sản phẩm nào.</p>
           ) : (
             products.map(product => (
-            <li key={product.id}
-              style={{
-                border: '1px solid #ddd',
-                padding: '12px',
-                borderRadius: '8px',
-                background: '#fff',
-                boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-                transition: 'transform 0.25s ease, box-shadow 0.25s ease',   
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "translateY(-6px)";
-                e.currentTarget.style.boxShadow = "0 12px 22px rgba(0,0,0,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.05)";
-              }}
-            >
-
-                <Link to={`/product/${product.id}`}>
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    style={{
-                      width: '100%',
-                      height: '190px',
-                      objectFit: 'cover',
-                      borderRadius: '6px',
-                      marginBottom: '10px'
-                    }}
-                  />
-                </Link>
-                <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '6px' ,  whiteSpace: 'nowrap', overflow: 'hidden',textOverflow: 'ellipsis'}}>{product.name}</h3>
-                </Link>
-                <p>Còn <span>{product.stock}</span> sản phẩm<br></br></p>
-                <p style={{ fontWeight: 'bold', color: '#d0021b' }}>
-                  <span>{Number(product.price).toLocaleString('vi-VN')} VND</span>
-                </p>
-
-                <button
-                  onClick={() => addToCart(product)}
-                  style={{
-                    marginTop: '10px',
-                    padding: '8px 12px',
-                    background: 'grey',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    width: '100%'
-                  }}
-                >
-                  Thêm vào giỏ hàng
-                </button>
+              <li key={product.id} style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '8px', background: '#fff', boxShadow: '0 2px 6px rgba(0,0,0,0.05)', transition: 'transform 0.25s ease, box-shadow 0.25s ease' }}>
+                <Link to={`/product/${product.id}`}><img src={product.image} alt={product.name} style={{ width: '100%', height: '190px', objectFit: 'cover', borderRadius: '6px', marginBottom: '10px' }} /></Link>
+                <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}><h3 style={{ fontSize: '1rem', marginBottom: '6px', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{product.name}</h3></Link>
+                <p>Còn <span>{product.stock}</span> sản phẩm</p>
+                <p style={{ fontWeight:'bold', color:'#d0021b' }}>{Number(product.price).toLocaleString('vi-VN')} VND</p>
+                <button onClick={() => addToCart(product)} style={{ marginTop:'10px', padding:'8px 12px', background:'grey', color:'white', border:'none', borderRadius:'4px', cursor:'pointer', width:'100%' }}>Thêm vào giỏ hàng</button>
               </li>
             ))
           )}
@@ -207,13 +146,7 @@ function Products() {
       </main>
 
       <style>
-        {`
-          @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-          }
-        `}
+        {`@keyframes pulse { 0% {opacity:1;} 50% {opacity:0.4;} 100% {opacity:1;} }`}
       </style>
     </div>
   );

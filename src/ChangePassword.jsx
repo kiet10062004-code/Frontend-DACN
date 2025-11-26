@@ -53,7 +53,7 @@ function ChangePassword() {
         return;
       }
 
-      await axios.post('https://backend-dacn-h8nw1.onrender.com/api/change-password/', {
+      await axios.post('https://backend-dacn-hmw1.onrender.com/api/change-password/', {
         old_password: form.old_password,
         new_password: form.new_password
       }, {

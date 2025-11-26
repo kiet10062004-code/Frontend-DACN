@@ -35,7 +35,7 @@ function TraCuuDonHang() {
     setLoading(true);
     setSearched(true);
     try {
-      const res = await axios.get('https://backend-dacn-h8nw1.onrender.com/api/orders/search/', {
+      const res = await axios.get('https://backend-dacn-hmw1.onrender.com/api/orders/search/', {
         params: { keyword }
       });
       setOrders(res.data);

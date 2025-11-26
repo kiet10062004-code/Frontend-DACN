@@ -19,7 +19,7 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
     }
 
     try {
-      const res = await axios.get(`https://backend-dacn-h8nw1.onrender.com/api/product/search/?q=${value}`);
+      const res = await axios.get(`https://backend-dacn-hmw1.onrender.com/api/product/search/?q=${value}`);
 
       console.log("API trả về:", res.data);
 
@@ -95,7 +95,7 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
             <div className="suggestions">
               {suggestions.map((item) => (
                 <Link to={`/product/${item.id}`} key={item.id} className="suggestion-item">
-                  <img src={`https://backend-dacn-h8nw1.onrender.com${item.image}`} alt={item.name} />
+                  <img src={`https://backend-dacn-hmw1.onrender.com${item.image}`} alt={item.name} />
                   <span>{item.name}</span>
                 </Link>
               ))}

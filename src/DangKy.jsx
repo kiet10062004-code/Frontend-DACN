@@ -95,7 +95,7 @@ function Dangky() {
 
   const checkExists = async () => {
     try {
-      const res = await axios.get('https://backend-dacn-h8nw1.onrender.com/api/check-user/', {
+      const res = await axios.get('https://backend-dacn-hmw1.onrender.com/api/check-user/', {
         params: {
           username: form.username,
           email: form.email,
@@ -128,7 +128,7 @@ function Dangky() {
     }
 
     try {
-      await axios.post('https://backend-dacn-h8nw1.onrender.com/register/', form);
+      await axios.post('https://backend-dacn-hmw1.onrender.com/register/', form);
       navigate('/login');
     } catch (err) {
       console.error('Lỗi server:', err);
