@@ -128,7 +128,7 @@ function Dangky() {
     }
 
     try {
-      await axios.post('https://backend-dacn-hmw1.onrender.com/register/', form);
+      await axios.post('https://backend-dacn-hmw1.onrender.com/api/register/', form);
       navigate('/login');
     } catch (err) {
       console.error('Lỗi server:', err);
