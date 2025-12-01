@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // <-- Đã thêm useEffect
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AvatarDefault from './assets/Avatar.jpg';
 import axios from "axios";
@@ -8,18 +8,15 @@ const DEBOUNCE_DELAY = 300;
 
 function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
     
-    // Giữ nguyên state cũ
     const [search, setSearch] = useState("");
     const [suggestions, setSuggestions] = useState([]); 
     
-    // State mới: Chứa từ khóa đã được "debounce"
     const [debouncedSearch, setDebouncedSearch] = useState("");
 
     // Hàm CHỈ CẬP NHẬT STATE 'search'
     const handleSearch = (e) => {
         const value = e.target.value;
         setSearch(value);
-        // KHÔNG GỌI API TẠI ĐÂY NỮA
     };
 
     // 1. Hook DEBOUNCE: Cập nhật debouncedSearch sau khi người dùng ngừng gõ
@@ -28,7 +25,6 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
             setDebouncedSearch(search);
         }, DEBOUNCE_DELAY);
 
-        // Cleanup: Xóa timer nếu search thay đổi
         return () => {
             clearTimeout(handler);
         };
@@ -43,14 +39,13 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
             return;
         }
 
-        // Khởi tạo AbortController để hủy yêu cầu cũ
         const controller = new AbortController();
 
         const fetchSuggestions = async () => {
             try {
                 const res = await axios.get(
                     `https://backend-dacn-hmw1.onrender.com/api/product/search/?q=${value}`,
-                    { signal: controller.signal } // <-- Gắn signal vào yêu cầu
+                    { signal: controller.signal }
                 );
 
                 console.log("API trả về:", res.data);
@@ -61,7 +56,6 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
                     setSuggestions([]);
                 }
             } catch (error) {
-                // Bỏ qua lỗi nếu đó là lỗi do yêu cầu bị hủy (AbortError)
                 if (axios.isCancel(error) || error.name === 'AbortError') {
                     console.log('Request aborted:', value);
                     return; 
@@ -78,7 +72,7 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
             controller.abort();
         };
 
-    }, [debouncedSearch]); // Chạy lại khi 'debouncedSearch' thay đổi
+    }, [debouncedSearch]);
 
 
   return (
@@ -86,12 +80,22 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
       <nav
         style={{
           position: 'fixed',
-            // ... (Các style giữ nguyên)
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '64px',
+          padding: '0 20px',
+          background: '#eee',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          boxSizing: 'border-box',
+          zIndex: 1000,
+          borderBottom: '1px solid #ddd',
         }}
       >
       <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
       
-        {/* ... (Các Link giữ nguyên) ... */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <img
             src="/More_len.png"
@@ -99,8 +103,7 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
             style={{ height: "46px", width: "46px", borderRadius: "6px", objectFit: "cover" }}
           />
         </Link>
-        {/* ... (Các Link khác giữ nguyên) ... */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '5px', textDecoration: 'none', color: '#000' }}>
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '5px', textDecoration: 'none', color: '#000' }}>
           <MdHome size={20} />
           Trang chủ
         </Link>
@@ -119,7 +122,7 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
           <MdShoppingCart size={20} />
           Giỏ hàng
         </Link>
-        {/* Vùng Input Search */}
+
         <div className="search-container">
           <input
             type="text"
@@ -142,7 +145,7 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
         </div>
       </div>
 
-        {/* ... (Phần đăng nhập/đăng ký giữ nguyên) ... */}
+
         <div>
           {!isLoggedIn ? (
             <>
@@ -188,7 +191,6 @@ function Layout({ children, isLoggedIn, avatarUrl, fullName, handleLogout }) {
         </div>
       </nav>
 
-      {/* ... (Phần main và footer giữ nguyên) ... */}
       <main
         style={{
           flex :1,
